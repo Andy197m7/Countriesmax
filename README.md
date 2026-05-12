@@ -2,7 +2,7 @@
 
 A global demographic intelligence platform for analyzing population shifts, forecasting trends, and supporting policy and research decisions.
 
-**Live Demo:** [countriesmax.netlify.app](countriesmax.netlify.app)
+**Live Demo:** [countriesmax.netlify.app/](countriesmax.netlify.app/)
 
 ## Features
 
