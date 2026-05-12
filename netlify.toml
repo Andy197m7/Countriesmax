@@ -1,0 +1,42 @@
+[build]
+  command   = "cd frontend && npm install && npm run build"
+  publish   = "frontend/dist"
+  functions = "backend/netlify/functions"
+
+# ── API redirects ─────────────────────────────────────────────────────────────
+
+[[redirects]]
+  from   = "/api/country/:code"
+  to     = "/.netlify/functions/country/:code"
+  status = 200
+
+[[redirects]]
+  from   = "/api/predict/:code"
+  to     = "/.netlify/functions/predict/:code"
+  status = 200
+
+[[redirects]]
+  from   = "/api/countries"
+  to     = "/.netlify/functions/countries"
+  status = 200
+
+[[redirects]]
+  from   = "/api/search"
+  to     = "/.netlify/functions/search"
+  status = 200
+
+[[redirects]]
+  from   = "/api/global-trends"
+  to     = "/.netlify/functions/global-trends"
+  status = 200
+
+[[redirects]]
+  from   = "/api/hotspots"
+  to     = "/.netlify/functions/hotspots"
+  status = 200
+
+# ── SPA fallback ──────────────────────────────────────────────────────────────
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
