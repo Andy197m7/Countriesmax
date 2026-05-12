@@ -1,33 +1,36 @@
 # PopulationMax
 
-A global demographic intelligence platform for analyzing population shifts, forecasting trends, and supporting policy and research decisions.
+PopulationMax is a full-stack demographic intelligence dashboard for exploring country population data, historical trends, projections, and comparative insights across 198 countries.
+
+[Live Site](https://countriesmax.netlify.app/)
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/YOUR-SITE-ID/deploy-status)](https://app.netlify.com/sites/YOUR-SITE-NAME/deploys)
 
 ## Features
 
-- **Multi-Source Indexing**: Synchronizes demographic data from CIA World Factbook, World Bank, and United Nations datasets for cross-validation and higher reliability
-- **Neural Forecast Visualization**: Displays population trajectories from 2026 through 2100 with AI-based modeling for growth peaks and decline phases
-- **Longevity Index**: Combines life expectancy metrics with centenarian distribution to measure aging stability across countries
-- **Geospatial Intelligence Map**: Interactive world map with demographic classifications such as hyper-growth regions, aging societies, and migration-dependent economies
-- **Comparative Demographic Tables**: Side-by-side analysis of countries with historical deltas, growth variance, and median age rankings
-- **Intelligence Tags System**: Automatic classification of countries into Hyper Growth, Terminal Transition, and Migration Hub categories for fast strategic interpretation
-- **Adaptive Scaling Interface**: Dynamic unit formatting across millions and billions for clarity across small and large populations
-- **Scannability Design System**: Hierarchical visual structure for fast interpretation of dense demographic datasets
-- **Mobile-Ready Architecture**: Responsive design for real-time demographic exploration across devices
+- Multi-source demographic data indexing for broad country coverage and cross-checking.
+- Forecast visualization for population trajectories through 2100.
+- Longevity analysis using life expectancy and aging indicators.
+- Geospatial intelligence views for demographic classification and regional interpretation.
+- Comparative country tables for historical deltas, growth variance, and ranking metrics.
+- Automatic intelligence tags for fast demographic categorization.
+- Adaptive numeric formatting for clarity across small and large populations.
+- Scannability-focused UI design for dense data exploration.
+- Mobile-responsive layout for desktop and mobile access.
 
 ## Tech Stack
 
 ### Frontend
 - React 18+
-- Recharts for data visualization
-- React Router for navigation
-- Axios for API communication
-- Tailwind CSS for styling
+- Vite
+- Tailwind CSS
+- Recharts
+- React Router
+- Axios
 
 ### Backend
-- Python Flask or FastAPI
-- Pandas and NumPy for data processing
-- Scikit-learn for predictive modeling
-- SQLite for local storage
+- Node.js
+- Netlify Serverless Functions
 
 ### Data Layer
 - CIA World Factbook datasets
@@ -35,81 +38,45 @@ A global demographic intelligence platform for analyzing population shifts, fore
 - United Nations population projections
 - Unified aggregation and normalization pipeline
 
-## Project Structure
-
-```bash
-populationmax/
-├── frontend/          # React application interface
-├── backend/           # API and data processing layer
-├── data/              # Raw and processed demographic datasets
-├── models/            # Forecasting and ML models
-├── pipelines/         # Data ingestion and transformation workflows
-└── docs/              # Documentation and research notes
-```
-
-## Setup Instructions
-
-### Backend Setup
-
-1. Navigate to the backend directory:
-```bash
-cd backend
-```
-
-2. Create a virtual environment:
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-4. Start the API server:
-```bash
-python app.py
-```
-
-The API runs at `http://localhost:5000`
-
-### Frontend Setup
-
-1. Navigate to the frontend directory:
-```bash
-cd frontend
-```
-
-2. Install packages:
-```bash
-npm install
-```
-
-3. Start the development server:
-```bash
-npm start
-```
-
-The application runs at `http://localhost:3000`
-
 ## API Endpoints
 
-- `GET /api/population` - Returns global and country population datasets
-- `GET /api/country` - Returns detailed demographic profile for a selected country
-- `GET /api/predictions` - Returns neural forecast outputs through 2100
-- `GET /api/trends` - Returns global and regional growth patterns
-- `GET /api/tags` - Returns intelligence classification labels
-- `GET /api/map` - Returns geospatial demographic layers
+| Endpoint | Returns |
+|---|---|
+| `GET /api/countries` | All 198 countries, sorted A→Z |
+| `GET /api/search?query=ind` | Up to 10 matches by name or code |
+| `GET /api/country/IND` | Country profile plus population records |
+| `GET /api/global-trends?mode=history` | World population history |
+| `GET /api/global-trends?mode=projections` | World population projections |
+| `GET /api/hotspots?limit=10` | Top countries by growth rate |
+| `GET /api/predict/IND` | Forecast values for 2024, 2030, 2050, and 2100 |
 
-## AWS Deployment
+## Project Structure
 
-The application is designed for AWS deployment:
-- **S3**: Stores dataset files and versioning
-- **AWS Glue**: Processes ETL pipelines for normalization
-- **SageMaker**: Trains and serves forecasting models
-- **Lambda**: Runs serverless API functions
-- **CloudFront**: Delivers frontend assets with low latency
+```text
+populationmax-full/
+├── frontend/                    ← React SPA (Vite + Tailwind + Recharts)
+├── backend/                     ← Netlify Serverless Functions (Node.js)
+└── netlify.toml                 ← Build config + /api/* redirects + SPA fallback
+```
+
+## Local Development
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+```bash
+netlify functions:serve --port 9999 --functions-dir backend/netlify/functions
+```
+
+## Deployment
+
+1. Push the repository to GitHub.
+2. Import it into Netlify.
+3. Use the included `netlify.toml` for build and function settings.
+4. Deploy the site.
 
 ## License
 
