@@ -4,8 +4,6 @@ PopulationMax is a full-stack demographic intelligence dashboard for exploring c
 
 [Live Site](https://countriesmax.netlify.app/)
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/YOUR-SITE-ID/deploy-status)](https://app.netlify.com/sites/YOUR-SITE-NAME/deploys)
-
 ## Features
 
 - Multi-source demographic data indexing for broad country coverage and cross-checking.
