@@ -2,8 +2,6 @@
 
 A global demographic intelligence platform for analyzing population shifts, forecasting trends, and supporting policy and research decisions.
 
-**Live Demo:** [countriesmax.netlify.app/](countriesmax.netlify.app/)
-
 ## Features
 
 - **Multi-Source Indexing**: Synchronizes demographic data from CIA World Factbook, World Bank, and United Nations datasets for cross-validation and higher reliability
