@@ -2,7 +2,7 @@
 
 PopulationMax is a full-stack demographic intelligence dashboard for exploring country population data, historical trends, projections, and comparative insights across 198 countries.
 
-https://countries-max.netlify.app/
+https://countriesmax.netlify.app/
 
 ## Features
 
