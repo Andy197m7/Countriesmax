@@ -52,9 +52,12 @@ PopulationMax is a full-stack demographic intelligence dashboard for exploring c
 
 ```text
 populationmax-full/
-├── frontend/                    ← React SPA (Vite + Tailwind + Recharts)
-├── backend/                     ← Netlify Serverless Functions (Node.js)
-└── netlify.toml                 ← Build config + /api/* redirects + SPA fallback
+├── frontend/                    ← React SPA for the dashboard UI
+├── backend/                     ← Netlify serverless functions and shared data loader
+├── java/                        ← Java utilities and entry point (`PopulationsMax.java`)
+├── ml/                          ← ML and ETL scripts (`glue_etl.py`, `pipeline.py`, `train.py`)
+├── cpp/                         ← C++ projection engine (`projection.cpp`)
+└── netlify.toml                 ← Build config, API redirects, and SPA fallback
 ```
 
 ## Local Development
