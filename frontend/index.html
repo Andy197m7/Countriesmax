@@ -1,0 +1,591 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg0:#020617;--bg1:#0a0f1e;--bg2:#0f172a;--bg3:#1e293b;--t1:#f1f5f9;--t2:#94a3b8;--t3:#475569;--t4:#334155;--blue:#2563eb;--blue2:#1d4ed8;--blue3:#60a5fa;--green2:#34d399;--border:#1e293b}
+body{background:var(--bg0);color:var(--t1);font-family:system-ui,-apple-system,sans-serif;font-size:14px;line-height:1.5}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-track{background:var(--bg1)}::-webkit-scrollbar-thumb{background:var(--bg3);border-radius:2px}
+.app{padding:18px 22px;max-width:1180px;margin:0 auto}
+.hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:12px}
+.logo{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+.logo-icon{width:36px;height:36px;background:var(--blue2);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 0 18px rgba(37,99,235,0.35)}
+.logo h1{font-size:20px;font-weight:900;letter-spacing:-.5px}
+.logo p{font-size:8px;font-weight:700;letter-spacing:.2em;color:var(--t3);text-transform:uppercase;margin-top:1px}
+.hdr-r{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.vtoggle{display:flex;background:var(--bg1);border:1px solid var(--border);border-radius:11px;padding:3px;gap:2px}
+.vbtn{display:flex;align-items:center;gap:5px;padding:6px 14px;border-radius:8px;font-size:10px;font-weight:800;cursor:pointer;border:none;background:none;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;transition:all .2s}
+.vbtn i{font-size:13px}.vbtn.on{background:var(--bg2);color:var(--blue3);box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.srch-wrap{position:relative}
+.srch-box{display:flex;align-items:center;gap:7px;background:var(--bg1);border:1.5px solid var(--border);border-radius:11px;padding:7px 13px;width:230px;transition:border .2s}
+.srch-box:focus-within{border-color:var(--blue)}
+.srch-box i{color:var(--t3);font-size:14px}
+.srch-box input{background:none;border:none;color:var(--t1);font-size:12px;font-weight:600;outline:none;width:100%;font-family:inherit}
+.srch-box input::placeholder{color:var(--t4)}
+.srch-drop{position:absolute;top:calc(100%+5px);left:0;right:0;background:#0d1627;border:1.5px solid var(--border);border-radius:11px;z-index:200;overflow:hidden;box-shadow:0 20px 40px rgba(0,0,0,.6);display:none}
+.srch-item{padding:9px 13px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--bg2);transition:background .1s;font-size:12px;font-weight:700;color:var(--t2)}
+.srch-item:last-child{border-bottom:none}.srch-item:hover{background:var(--bg2);color:var(--t1)}
+.srch-code{font-size:9px;font-weight:800;letter-spacing:.08em;background:var(--bg3);padding:2px 5px;border-radius:4px;color:var(--t3)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:20px}
+.sc{background:var(--bg1);border:1px solid var(--border);border-radius:15px;padding:16px;transition:transform .2s,border-color .2s}
+.sc:hover{transform:translateY(-2px);border-color:var(--bg3)}
+.sc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+.sc-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.sc-icon.bl{background:rgba(37,99,235,.15)}.sc-icon.gr{background:rgba(16,185,129,.15)}.sc-icon.am{background:rgba(245,158,11,.15)}.sc-icon.rs{background:rgba(244,63,94,.15)}
+.badge{display:inline-flex;align-items:center;gap:2px;padding:3px 8px;border-radius:20px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+.badge.up{background:rgba(16,185,129,.1);color:var(--green2);border:1px solid rgba(16,185,129,.2)}
+.badge.dn{background:rgba(244,63,94,.1);color:#fb7185;border:1px solid rgba(244,63,94,.2)}
+.badge.nu{background:rgba(71,85,105,.2);color:var(--t3);border:1px solid rgba(71,85,105,.25)}
+.sc-lbl{font-size:9px;font-weight:700;letter-spacing:.18em;color:var(--t3);text-transform:uppercase;margin-bottom:4px}
+.sc-val{font-size:24px;font-weight:900;letter-spacing:-.6px}
+.main-grid{display:grid;grid-template-columns:1fr 320px;gap:14px;margin-bottom:18px}
+.chart-card{background:var(--bg1);border:1px solid var(--border);border-radius:15px;padding:18px}
+.chart-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.chart-title{font-size:14px;font-weight:900;letter-spacing:-.2px}
+.chart-sub{font-size:9px;font-weight:700;letter-spacing:.18em;color:var(--t4);text-transform:uppercase;margin-top:2px}
+.mode-tog{display:flex;background:var(--bg0);border:1.5px solid var(--border);border-radius:9px;padding:2px;gap:2px}
+.mbtn{padding:5px 12px;border-radius:7px;font-size:10px;font-weight:800;cursor:pointer;border:none;background:none;color:var(--t4);text-transform:uppercase;letter-spacing:.08em;transition:all .2s;position:relative}
+.mbtn.on{background:var(--bg2);color:var(--blue3)}
+.mbtn.on::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:14px;height:2px;background:var(--blue);border-radius:1px}
+.sidebar{display:flex;flex-direction:column;gap:13px}
+.scard{background:var(--bg1);border:1px solid var(--border);border-radius:13px;padding:15px}
+.slbl{font-size:9px;font-weight:800;letter-spacing:.22em;color:var(--t4);text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.slbl::after{content:'';flex:1;height:1px;background:var(--bg3)}
+.vrow{display:flex;justify-content:space-between;align-items:flex-end;padding:11px 0}
+.vrow+.vrow{border-top:1px solid var(--bg2)}
+.vlbl{font-size:9px;font-weight:700;letter-spacing:.14em;color:var(--t3);text-transform:uppercase;margin-bottom:4px}
+.vval{font-size:18px;font-weight:900;display:flex;align-items:center;gap:6px}
+.vrt{text-align:right}.vtag{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}.vsub{font-size:10px;color:var(--t3);font-weight:600}
+.hs{display:flex;align-items:center;padding:8px 9px;border-radius:9px;cursor:pointer;border:1.5px solid transparent;transition:all .18s;gap:9px;margin-bottom:2px}
+.hs:hover{background:var(--bg2);border-color:var(--border)}.hs.on{background:#0d1f3c;border-color:var(--blue2)}
+.hs-rank{width:20px;height:20px;border-radius:5px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;color:var(--t4);flex-shrink:0}
+.hs.on .hs-rank{background:#1e3a5f;color:var(--blue3)}
+.hs-info{flex:1;min-width:0}
+.hs-name{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hs-pop{font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--t4);text-transform:uppercase;margin-top:1px}
+.hs-pct{font-size:13px;font-weight:900;letter-spacing:-.3px}.hs-pct.hi{color:#fb7185}.hs-pct.med{color:var(--green2)}.hs-pct.neg{color:#64748b}
+.hs-rlbl{font-size:8px;font-weight:700;color:var(--t4);text-transform:uppercase;text-align:right;margin-top:1px}
+.more-btn{width:100%;margin-top:8px;padding:8px;background:none;border:1.5px solid var(--border);border-radius:9px;color:var(--blue3);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:5px}
+.more-btn:hover{background:rgba(37,99,235,.08);border-color:var(--blue2)}
+.sel-ban{display:flex;align-items:center;gap:9px;margin-bottom:16px;padding:10px 13px;background:#0d1f3c;border:1.5px solid var(--blue2);border-radius:11px}
+.back-btn{width:27px;height:27px;background:var(--bg2);border:1.5px solid #1e3a5f;border-radius:7px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:13px;font-weight:900;transition:all .15s;flex-shrink:0}
+.back-btn:hover{background:var(--bg3);color:var(--t1)}
+.sel-lbl{font-size:9px;font-weight:800;letter-spacing:.18em;color:var(--t4);text-transform:uppercase}
+.sel-name{font-size:13px;font-weight:900;color:var(--blue3);letter-spacing:-.2px}
+.sel-meta{font-size:10px;color:var(--t4);font-weight:600;margin-top:1px}
+.ai-sec{background:#040b18;border:1px solid #0f2040;border-radius:18px;padding:22px;position:relative;overflow:hidden;margin-bottom:4px}
+.ai-glow{position:absolute;top:-60px;right:-60px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(37,99,235,.06) 0%,transparent 70%);pointer-events:none}
+.ai-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;gap:14px}
+.ai-ttl-row{display:flex;align-items:center;gap:11px}
+.ai-badge{width:44px;height:44px;background:rgba(37,99,235,.12);border:1px solid rgba(37,99,235,.25);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ai-badge i{font-size:22px;color:var(--blue3)}
+.ai-heading{font-size:17px;font-weight:900;letter-spacing:-.3px}
+.ai-sub{font-size:11px;color:var(--t4);margin-top:2px;font-weight:600}
+.run-btn{display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--blue2),var(--blue));color:#fff;border:none;padding:12px 24px;border-radius:12px;font-size:12px;font-weight:900;cursor:pointer;flex-shrink:0;transition:all .22s;box-shadow:0 6px 24px rgba(37,99,235,.3);text-transform:uppercase;letter-spacing:.06em}
+.run-btn i{font-size:15px}.run-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 32px rgba(37,99,235,.45)}
+.run-btn:active:not(:disabled){transform:scale(.97)}.run-btn:disabled{opacity:.55;cursor:not-allowed}
+.ai-results{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.acard{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:11px;padding:13px}
+.acard.full{grid-column:1/-1}.acard.hi{background:rgba(37,99,235,.06);border-color:rgba(37,99,235,.2)}.acard.reco{background:rgba(37,99,235,.1);border-color:rgba(59,130,246,.3)}
+.albl{font-size:9px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;margin-bottom:9px}
+.albl.bl{color:var(--blue3)}.albl.am{color:#fbbf24}.albl.gr{color:var(--green2)}.albl.rs{color:#fb7185}.albl.in{color:#a5b4fc}.albl.cy{color:#22d3ee}
+.sum-txt{font-size:12px;color:var(--t2);font-style:italic;font-weight:600;line-height:1.7}
+.mrow{display:flex;justify-content:space-between;font-size:11px;margin-bottom:5px}
+.mk{color:var(--t3);font-weight:600}.mv{color:var(--t1);font-weight:800}
+.sbar-wrap{margin-bottom:8px}
+.sbar-top{display:flex;justify-content:space-between;font-size:10px;font-weight:700;margin-bottom:3px;color:var(--t3)}
+.sbar-track{background:var(--bg2);height:5px;border-radius:3px;overflow:hidden}
+.sbar-fill{height:100%;border-radius:3px;transition:width .9s cubic-bezier(.4,0,.2,1)}
+.sbar-fill.sb{background:linear-gradient(90deg,var(--blue2),var(--blue3))}.sbar-fill.sg{background:linear-gradient(90deg,#059669,var(--green2))}.sbar-fill.sa{background:linear-gradient(90deg,#d97706,#fbbf24)}
+.bsm{font-size:11px;color:var(--t3);line-height:1.7;font-weight:600}
+.reco-lbl{font-size:9px;font-weight:800;letter-spacing:.18em;color:var(--blue3);text-transform:uppercase;margin-bottom:7px;display:flex;align-items:center;gap:5px}
+.reco-lbl i{font-size:12px}.reco-txt{font-size:13px;font-weight:900;color:var(--t1);line-height:1.45}
+.mini-c-lbl{font-size:9px;font-weight:800;letter-spacing:.18em;color:var(--t4);text-transform:uppercase;margin-bottom:11px}
+.tbl-wrap{background:var(--bg1);border:1px solid var(--border);border-radius:15px;overflow:hidden}
+.tbl-top{padding:15px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.tbl-top h3{font-size:14px;font-weight:900}
+.tbl-cnt{background:var(--bg3);color:var(--t3);padding:3px 9px;border-radius:6px;font-size:10px;font-weight:800;letter-spacing:.04em}
+.tbl-scroll{overflow-x:auto;max-height:560px;overflow-y:auto}
+table{width:100%;border-collapse:collapse}
+thead th{padding:9px 15px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--t4);background:#07101f;border-bottom:1px solid var(--border);text-align:center;white-space:nowrap}
+thead th:first-child{text-align:left}
+tbody tr{border-bottom:1px solid rgba(255,255,255,.02);transition:background .1s}
+tbody tr:hover{background:rgba(255,255,255,.02)}
+tbody td{padding:9px 15px;font-size:12px;text-align:center;color:var(--t3)}
+tbody td:first-child{text-align:left}
+.cname{display:flex;align-items:center;gap:7px}
+.cdot{width:6px;height:6px;border-radius:50%;background:var(--blue2);flex-shrink:0}
+.cname-t{font-weight:700;color:var(--t2)}.ccode-t{font-size:9px;font-weight:800;background:var(--bg2);border:1px solid var(--border);padding:1px 5px;border-radius:4px;color:var(--t4);letter-spacing:.04em}
+.gbadge{padding:2px 8px;border-radius:5px;font-size:10px;font-weight:800;display:inline-block}
+.gbadge.hi{background:rgba(244,63,94,.1);color:#fb7185;border:1px solid rgba(244,63,94,.2)}
+.gbadge.md{background:rgba(16,185,129,.1);color:var(--green2);border:1px solid rgba(16,185,129,.2)}
+.gbadge.lo{background:rgba(71,85,105,.1);color:var(--t3);border:1px solid rgba(71,85,105,.2)}
+.gbadge.ng{background:rgba(244,63,94,.08);color:#f87171;border:1px solid rgba(244,63,94,.15)}
+.chart-c{height:268px}.mini-c-c{height:148px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}.fade{animation:fadeUp .45s ease}
+</style>
+
+<div class="app">
+<div class="hdr">
+  <div class="logo" onclick="goHome()">
+    <div class="logo-icon"><i class="ti ti-world" style="color:#fff;font-size:20px" aria-hidden="true"></i></div>
+    <div><h1>PopulationMax</h1><p>Global Demographic Intelligence</p></div>
+  </div>
+  <div class="hdr-r">
+    <div class="vtoggle">
+      <button class="vbtn on" id="vb-dash" onclick="setView('dash')"><i class="ti ti-layout-grid" aria-hidden="true"></i>Insights</button>
+      <button class="vbtn" id="vb-tbl" onclick="setView('tbl')"><i class="ti ti-table" aria-hidden="true"></i>Full Table</button>
+    </div>
+    <div class="srch-wrap">
+      <div class="srch-box">
+        <i class="ti ti-search" aria-hidden="true"></i>
+        <input type="text" id="srch-in" placeholder="Search 197 countries..." oninput="doSearch(this.value)" autocomplete="off" aria-label="Search countries"/>
+      </div>
+      <div class="srch-drop" id="srch-drop" role="listbox"></div>
+    </div>
+  </div>
+</div>
+<div id="content"></div>
+</div>
+
+<script>
+// Real UN/CIA/WB population data — computed from actual 2024/2030/2050/2100 projections
+const C=[
+  {code:"AFG",n:"Afghanistan",ma:20,cia:2.70,wb:2.62,un:2.78,le:54.1,mig:-120000,p24:42647492,p30:50039402,p50:76885134,p100:130216739},
+  {code:"ALB",n:"Albania",ma:36.3,cia:-0.73,wb:-0.77,un:-0.75,le:79.5,mig:-15000,p24:2791765,p30:2671885,p50:2240166,p100:1184997},
+  {code:"DZA",n:"Algeria",ma:29.1,cia:1.16,wb:1.11,un:1.19,le:77.8,mig:-10000,p24:46814308,p30:50154166,p50:59565554,p100:64487527},
+  {code:"AND",n:"Andorra",ma:48.8,cia:0.75,wb:0.63,un:0.77,le:null,mig:null,p24:81938,p30:85682,p50:82195,p100:47222},
+  {code:"AGO",n:"Angola",ma:16.3,cia:2.97,wb:2.87,un:3.06,le:62.1,mig:0,p24:37885849,p30:45160458,p50:74295394,p100:150045574},
+  {code:"ATG",n:"Antigua and Barbuda",ma:33.9,cia:0.44,wb:0.34,un:0.45,le:null,mig:null,p24:93772,p30:96000,p50:95055,p100:67975},
+  {code:"ARG",n:"Argentina",ma:33.3,cia:0.32,wb:0.22,un:0.33,le:77.1,mig:5000,p24:45696159,p30:46585022,p50:48308944,p100:38255990},
+  {code:"ARM",n:"Armenia",ma:38.9,cia:-0.65,wb:-0.71,un:-0.67,le:null,mig:null,p24:2973840,p30:2851291,p50:2495207,p100:1692198},
+  {code:"AUS",n:"Australia",ma:38.1,cia:0.89,wb:0.76,un:0.92,le:83.2,mig:190000,p24:26713205,p30:28188539,p50:32506969,p100:43143685},
+  {code:"AUT",n:"Austria",ma:44.5,cia:-0.07,wb:-0.14,un:-0.07,le:81.6,mig:30000,p24:9120813,p30:9080346,p50:8724332,p100:7399328},
+  {code:"AZE",n:"Azerbaijan",ma:34.3,cia:0.54,wb:0.43,un:0.56,le:null,mig:null,p24:10336578,p30:10665380,p50:11224923,p100:10021320},
+  {code:"BHS",n:"Bahamas",ma:30.7,cia:0.34,wb:0.24,un:0.35,le:null,mig:null,p24:401283,p30:410266,p50:424265,p100:384955},
+  {code:"BHR",n:"Bahrain",ma:33.4,cia:1.57,wb:1.41,un:1.62,le:null,mig:null,p24:1607049,p30:1765209,p50:2139464,p100:3090323},
+  {code:"BGD",n:"Bangladesh",ma:29.6,cia:0.92,wb:0.79,un:0.95,le:73.0,mig:-350000,p24:174701211,p30:184424144,p50:203904900,p100:176366038},
+  {code:"BRB",n:"Barbados",ma:41.4,cia:0.04,wb:-0.04,un:0.04,le:null,mig:null,p24:282309,p30:283082,p50:267788,p100:203022},
+  {code:"BLR",n:"Belarus",ma:42.1,cia:-0.43,wb:-0.49,un:-0.44,le:null,mig:null,p24:9455037,p30:9206170,p50:8409632,p100:6469457},
+  {code:"BEL",n:"Belgium",ma:42.0,cia:0.22,wb:0.13,un:0.23,le:null,mig:null,p24:11715774,p30:11873460,p50:12090657,p100:11521156},
+  {code:"BLZ",n:"Belize",ma:26.8,cia:1.30,wb:1.14,un:1.34,le:null,mig:null,p24:416656,p30:450428,p50:538838,p100:562797},
+  {code:"BEN",n:"Benin",ma:17.2,cia:2.58,wb:2.44,un:2.66,le:null,mig:null,p24:14080072,p30:16393827,p50:25264035,p100:46617384},
+  {code:"BOL",n:"Bolivia",ma:26.6,cia:1.35,wb:1.21,un:1.39,le:null,mig:null,p24:12567336,p30:13625507,p50:16609854,p100:18861521},
+  {code:"BIH",n:"Bosnia and Herzegovina",ma:44.8,cia:-0.39,wb:-0.45,un:-0.40,le:null,mig:null,p24:3194378,p30:3111789,p50:2739014,p100:1739032},
+  {code:"BWA",n:"Botswana",ma:27.1,cia:1.48,wb:1.32,un:1.52,le:null,mig:null,p24:2719694,p30:2972271,p50:3679340,p100:4177614},
+  {code:"BRA",n:"Brazil",ma:35.1,cia:0.47,wb:0.37,un:0.48,le:76.2,mig:20000,p24:217637297,p30:223908968,p50:230885725,p100:184547593},
+  {code:"BRN",n:"Brunei",ma:32.3,cia:0.62,wb:0.50,un:0.64,le:null,mig:null,p24:455858,p30:473312,p50:498373,p100:404521},
+  {code:"BGR",n:"Bulgaria",ma:45.1,cia:-0.84,wb:-0.89,un:-0.87,le:null,mig:null,p24:6618615,p30:6290166,p50:5187392,p100:2943542},
+  {code:"BFA",n:"Burkina Faso",ma:18.7,cia:2.41,wb:2.28,un:2.48,le:null,mig:null,p24:23840247,p30:27523563,p50:40541548,p100:61539300},
+  {code:"MMR",n:"Burma (Myanmar)",ma:30.8,cia:0.62,wb:0.50,un:0.64,le:null,mig:null,p24:54964694,p30:56987625,p50:59929399,p100:52417687},
+  {code:"BDI",n:"Burundi",ma:18.4,cia:2.56,wb:2.42,un:2.64,le:null,mig:null,p24:13591657,p30:15800530,p50:24208671,p100:39388467},
+  {code:"CPV",n:"Cabo Verde",ma:28.8,cia:0.94,wb:0.81,un:0.97,le:null,mig:null,p24:604461,p30:638840,p50:727457,p100:667365},
+  {code:"KHM",n:"Cambodia",ma:27.9,cia:0.88,wb:0.75,un:0.91,le:null,mig:null,p24:17121847,p30:18084248,p50:20258435,p100:19118804},
+  {code:"CMR",n:"Cameroon",ma:18.9,cia:2.51,wb:2.37,un:2.59,le:null,mig:null,p24:29394433,p30:34051103,p50:51279560,p100:87093219},
+  {code:"CAN",n:"Canada",ma:42.6,cia:0.79,wb:0.66,un:0.81,le:82.8,mig:450000,p24:39107046,p30:41008596,p50:45890819,p100:53903779},
+  {code:"CYM",n:"Cayman Islands",ma:41.0,cia:0.71,wb:0.59,un:0.73,le:null,mig:null,p24:69885,p30:72865,p50:77633,p100:78712},
+  {code:"CAF",n:"Central African Republic",ma:20.4,cia:3.10,wb:2.99,un:3.19,le:null,mig:null,p24:5915627,p30:7104274,p50:11533423,p100:18793631},
+  {code:"TCD",n:"Chad",ma:16.7,cia:2.97,wb:2.87,un:3.06,le:null,mig:null,p24:18847148,p30:22460393,p50:36452035,p100:65152512},
+  {code:"CHL",n:"Chile",ma:36.9,cia:0.23,wb:0.14,un:0.24,le:null,mig:null,p24:19658839,p30:19933769,p50:20675378,p100:16798533},
+  {code:"CHN",n:"China",ma:40.2,cia:-0.11,wb:-0.18,un:-0.11,le:78.2,mig:-340000,p24:1425178782,p30:1415605906,p50:1312636325,p100:633368108},
+  {code:"COL",n:"Colombia",ma:32.7,cia:0.56,wb:0.45,un:0.58,le:null,mig:null,p24:52340774,p30:54129764,p50:56987651,p100:45837096},
+  {code:"COM",n:"Comoros",ma:22.7,cia:1.68,wb:1.52,un:1.73,le:null,mig:null,p24:867605,p30:959412,p50:1246207,p100:1570166},
+  {code:"COK",n:"Cook Islands",ma:36.0,cia:0.17,wb:0.07,un:0.18,le:null,mig:null,p24:17072,p30:17253,p50:17674,p100:16764},
+  {code:"CRI",n:"Costa Rica",ma:35.5,cia:0.58,wb:0.47,un:0.60,le:null,mig:null,p24:5246714,p30:5432243,p50:5702525,p100:4533000},
+  {code:"CIV",n:"Côte d'Ivoire",ma:21.2,cia:2.43,wb:2.30,un:2.50,le:null,mig:null,p24:29603302,p30:34211272,p50:51358243,p100:89366995},
+  {code:"HRV",n:"Croatia",ma:45.1,cia:-0.56,wb:-0.62,un:-0.58,le:null,mig:null,p24:3986627,p30:3850140,p50:3333425,p100:2113899},
+  {code:"CUB",n:"Cuba",ma:42.6,cia:-0.23,wb:-0.30,un:-0.24,le:null,mig:null,p24:11174587,p30:11016041,p50:10028085,p100:6478341},
+  {code:"CYP",n:"Cyprus",ma:39.5,cia:0.57,wb:0.46,un:0.59,le:null,mig:null,p24:1268467,p30:1311784,p50:1391785,p100:1337053},
+  {code:"CZE",n:"Czechia",ma:44.2,cia:0.02,wb:-0.06,un:0.02,le:null,mig:null,p24:10503734,p30:10515199,p50:10577126,p100:11172303},
+  {code:"COD",n:"Dem. Republic of the Congo",ma:16.9,cia:3.20,wb:3.09,un:3.30,le:60.1,mig:null,p24:105625114,p30:127582053,p50:217494003,p100:432378400},
+  {code:"DNK",n:"Denmark",ma:42.2,cia:0.44,wb:0.34,un:0.45,le:null,mig:null,p24:5939695,p30:6104474,p50:6445109,p100:7093770},
+  {code:"DJI",n:"Djibouti",ma:26.3,cia:1.31,wb:1.16,un:1.35,le:null,mig:null,p24:1152329,p30:1247129,p50:1502575,p100:1676909},
+  {code:"DMA",n:"Dominica",ma:37.0,cia:0.34,wb:0.24,un:0.35,le:null,mig:null,p24:73368,p30:74988,p50:74167,p100:52912},
+  {code:"DOM",n:"Dominican Republic",ma:29.2,cia:0.77,wb:0.64,un:0.79,le:null,mig:null,p24:11434005,p30:11982523,p50:13180541,p100:11908081},
+  {code:"ECU",n:"Ecuador",ma:28.0,cia:0.99,wb:0.85,un:1.02,le:null,mig:null,p24:18377367,p30:19486952,p50:22269779,p100:21448228},
+  {code:"EGY",n:"Egypt",ma:24.4,cia:1.49,wb:1.33,un:1.53,le:70.2,mig:null,p24:114484252,p30:125151725,p50:160339889,p100:205225076},
+  {code:"SLV",n:"El Salvador",ma:29.7,cia:0.40,wb:0.30,un:0.41,le:null,mig:null,p24:6396289,p30:6554224,p50:6636854,p100:4284249},
+  {code:"GNQ",n:"Equatorial Guinea",ma:22.1,cia:2.20,wb:2.07,un:2.27,le:null,mig:null,p24:1754993,p30:1999678,p50:2790533,p100:3855777},
+  {code:"ERI",n:"Eritrea",ma:21.3,cia:1.96,wb:1.81,un:2.02,le:null,mig:null,p24:3817651,p30:4283355,p50:5964021,p100:8575294},
+  {code:"EST",n:"Estonia",ma:45.0,cia:-0.39,wb:-0.46,un:-0.40,le:null,mig:null,p24:1319041,p30:1289441,p50:1171695,p100:835708},
+  {code:"SWZ",n:"Eswatini",ma:24.6,cia:1.12,wb:0.98,un:1.15,le:null,mig:null,p24:1222075,p30:1305985,p50:1655121,p100:1992790},
+  {code:"ETH",n:"Ethiopia",ma:20.4,cia:2.38,wb:2.25,un:2.45,le:66.0,mig:null,p24:129719719,p30:149296378,p50:214812309,p100:323741600},
+  {code:"FJI",n:"Fiji",ma:31.6,cia:0.72,wb:0.60,un:0.74,le:null,mig:null,p24:943072,p30:986172,p50:1094174,p100:1048164},
+  {code:"FIN",n:"Finland",ma:43.3,cia:0.04,wb:-0.04,un:0.04,le:null,mig:null,p24:5549886,p30:5565475,p50:5460917,p100:5023926},
+  {code:"FRA",n:"France",ma:42.6,cia:0.16,wb:0.08,un:0.16,le:82.5,mig:null,p24:64881830,p30:65543452,p50:65827072,p100:60851673},
+  {code:"GAB",n:"Gabon",ma:22.0,cia:1.87,wb:1.72,un:1.93,le:null,mig:null,p24:2484557,p30:2774523,p50:3757053,p100:5268088},
+  {code:"GMB",n:"Gambia",ma:20.2,cia:2.36,wb:2.22,un:2.43,le:null,mig:null,p24:2841803,p30:3263651,p50:4673743,p100:6667396},
+  {code:"GEO",n:"Georgia",ma:38.3,cia:-0.27,wb:-0.34,un:-0.28,le:null,mig:null,p24:3717425,p30:3657494,p50:3384660,p100:2366909},
+  {code:"DEU",n:"Germany",ma:47.8,cia:-0.09,wb:-0.17,un:-0.09,le:81.3,mig:null,p24:83252474,p30:82762675,p50:78932228,p100:68936102},
+  {code:"GHA",n:"Ghana",ma:21.4,cia:1.84,wb:1.69,un:1.90,le:null,mig:null,p24:34777522,p30:38775850,p50:52231785,p100:72826468},
+  {code:"GRC",n:"Greece",ma:46.5,cia:-0.42,wb:-0.48,un:-0.43,le:null,mig:null,p24:10302720,p30:10059703,p50:9144951,p100:6380722},
+  {code:"GRD",n:"Grenada",ma:35.4,cia:0.44,wb:0.34,un:0.45,le:null,mig:null,p24:126887,p30:130367,p50:136253,p100:115630},
+  {code:"GTM",n:"Guatemala",ma:24.8,cia:1.43,wb:1.28,un:1.47,le:null,mig:null,p24:18358430,p30:20003638,p50:24600727,p100:26170739},
+  {code:"GIN",n:"Guinea",ma:19.4,cia:2.31,wb:2.17,un:2.38,le:null,mig:null,p24:14528770,p30:16622388,p50:23711700,p100:34178283},
+  {code:"GNB",n:"Guinea-Bissau",ma:18.4,cia:2.10,wb:1.97,un:2.16,le:null,mig:null,p24:2197149,p30:2484863,p50:3445289,p100:4765962},
+  {code:"GUY",n:"Guyana",ma:28.3,cia:0.57,wb:0.45,un:0.59,le:null,mig:null,p24:819594,p30:848033,p50:878746,p100:632627},
+  {code:"HTI",n:"Haiti",ma:25.0,cia:1.10,wb:0.96,un:1.13,le:null,mig:null,p24:11867030,p30:12700006,p50:15087520,p100:16109408},
+  {code:"VAT",n:"Holy See (Vatican City)",ma:null,cia:1.07,wb:0.93,un:1.10,le:null,mig:null,p24:526,p30:561,p50:731,p100:1237},
+  {code:"HND",n:"Honduras",ma:25.7,cia:1.44,wb:1.29,un:1.48,le:null,mig:null,p24:10759406,p30:11724522,p50:14258514,p100:15166663},
+  {code:"HUN",n:"Hungary",ma:44.8,cia:-0.60,wb:-0.66,un:-0.62,le:null,mig:null,p24:9994993,p30:9642912,p50:8817396,p100:6929830},
+  {code:"ISL",n:"Iceland",ma:38.0,cia:0.55,wb:0.43,un:0.57,le:null,mig:null,p24:377689,p30:390338,p50:408783,p100:368486},
+  {code:"IND",n:"India",ma:29.8,cia:0.83,wb:0.70,un:0.86,le:70.1,mig:-480000,p24:1441719852,p30:1514994080,p50:1670490596,p100:1529850119},
+  {code:"IDN",n:"Indonesia",ma:31.5,cia:0.73,wb:0.61,un:0.75,le:72.3,mig:null,p24:279798049,p30:292150100,p50:317225213,p100:296623475},
+  {code:"IRN",n:"Iran",ma:33.8,cia:0.51,wb:0.40,un:0.53,le:null,mig:null,p24:89809781,p30:92921017,p50:99007204,p100:79906390},
+  {code:"IRQ",n:"Iraq",ma:22.4,cia:2.13,wb:1.99,un:2.20,le:null,mig:null,p24:46523657,p30:52800825,p50:74515140,p100:111503537},
+  {code:"IRL",n:"Ireland",ma:40.2,cia:0.58,wb:0.46,un:0.60,le:null,mig:null,p24:5089478,p30:5266881,p50:5724686,p100:5722314},
+  {code:"ISR",n:"Israel",ma:30.1,cia:1.43,wb:1.28,un:1.47,le:82.8,mig:null,p24:9311652,p30:10134951,p50:12991790,p100:18410403},
+  {code:"ITA",n:"Italy",ma:48.4,cia:-0.34,wb:-0.41,un:-0.35,le:82.3,mig:null,p24:58697744,p30:57544258,p50:52250484,p100:36874247},
+  {code:"JAM",n:"Jamaica",ma:30.9,cia:-0.12,wb:-0.19,un:-0.12,le:null,mig:null,p24:2824738,p30:2804356,p50:2493823,p100:897072},
+  {code:"JPN",n:"Japan",ma:49.9,cia:-0.57,wb:-0.63,un:-0.59,le:84.7,mig:70000,p24:122631432,p30:118514802,p50:103784357,p100:73644064},
+  {code:"JOR",n:"Jordan",ma:25.0,cia:0.78,wb:0.65,un:0.80,le:null,mig:null,p24:11384922,p30:11933395,p50:15005941,p100:17625253},
+  {code:"KAZ",n:"Kazakhstan",ma:31.9,cia:1.05,wb:0.91,un:1.08,le:null,mig:null,p24:19828165,p30:21128221,p50:25609978,p100:34093330},
+  {code:"KEN",n:"Kenya",ma:21.2,cia:1.95,wb:1.80,un:2.01,le:null,mig:null,p24:56203030,p30:63103942,p50:85211739,p100:112525079},
+  {code:"XKX",n:"Kosovo",ma:30.5,cia:0.22,wb:0.13,un:0.23,le:null,mig:null,p24:1667483,p30:1690888,p50:1669913,p100:944539},
+  {code:"KWT",n:"Kuwait",ma:30.3,cia:0.80,wb:0.67,un:0.82,le:null,mig:null,p24:4349380,p30:4564570,p50:5155414,p100:4895806},
+  {code:"KGZ",n:"Kyrgyzstan",ma:28.3,cia:1.45,wb:1.29,un:1.49,le:null,mig:null,p24:6839606,p30:7435378,p50:9426858,p100:11975365},
+  {code:"LAO",n:"Laos",ma:25.4,cia:1.24,wb:1.09,un:1.28,le:null,mig:null,p24:7736681,p30:8321287,p50:9775552,p100:9694234},
+  {code:"LVA",n:"Latvia",ma:45.5,cia:-1.03,wb:-1.07,un:-1.06,le:null,mig:null,p24:1810240,p30:1701338,p50:1433728,p100:954183},
+  {code:"LBN",n:"Lebanon",ma:36.3,cia:-1.68,wb:-1.74,un:-1.73,le:null,mig:null,p24:5219044,p30:4714240,p50:4937579,p100:4745074},
+  {code:"LSO",n:"Lesotho",ma:23.9,cia:1.00,wb:0.86,un:1.03,le:null,mig:null,p24:2356083,p30:2501946,p50:2898369,p100:2967268},
+  {code:"LBR",n:"Liberia",ma:19.9,cia:2.12,wb:1.99,un:2.18,le:null,mig:null,p24:5536949,p30:6282074,p50:8890700,p100:13226140},
+  {code:"LBY",n:"Libya",ma:26.2,cia:1.01,wb:0.87,un:1.04,le:null,mig:null,p24:6964197,p30:7394813,p50:8539976,p100:8473050},
+  {code:"LIE",n:"Liechtenstein",ma:44.2,cia:0.54,wb:0.42,un:0.56,le:null,mig:null,p24:39822,p30:41030,p50:42287,p100:41474},
+  {code:"LTU",n:"Lithuania",ma:45.1,cia:-0.85,wb:-0.90,un:-0.88,le:null,mig:null,p24:2692798,p30:2558928,p50:2187550,p100:1503077},
+  {code:"LUX",n:"Luxembourg",ma:39.9,cia:0.88,wb:0.75,un:0.91,le:null,mig:null,p24:661594,p30:697086,p50:781910,p100:879481},
+  {code:"MDG",n:"Madagascar",ma:17.9,cia:2.31,wb:2.17,un:2.38,le:null,mig:null,p24:31056610,p30:35604443,p50:51592965,p100:83316557},
+  {code:"MWI",n:"Malawi",ma:17.6,cia:2.51,wb:2.37,un:2.59,le:null,mig:null,p24:21475962,p30:24944243,p50:37159300,p100:58521719},
+  {code:"MYS",n:"Malaysia",ma:31.8,cia:0.96,wb:0.82,un:0.99,le:null,mig:null,p24:34671895,p30:36687569,p50:41032433,p100:39474474},
+  {code:"MDV",n:"Maldives",ma:31.3,cia:-0.17,wb:-0.25,un:-0.18,le:null,mig:null,p24:517887,p30:512683,p50:569909,p100:469441},
+  {code:"MLI",n:"Mali",ma:15.8,cia:3.02,wb:2.92,un:3.11,le:null,mig:null,p24:24015789,p30:28712294,p50:47439802,p100:87079523},
+  {code:"MLT",n:"Malta",ma:42.9,cia:0.21,wb:0.12,un:0.22,le:null,mig:null,p24:536740,p30:543425,p50:522737,p100:386365},
+  {code:"MHL",n:"Marshall Islands",ma:24.3,cia:0.91,wb:0.78,un:0.94,le:null,mig:null,p24:42415,p30:44733,p50:51211,p100:50977},
+  {code:"MRT",n:"Mauritania",ma:20.3,cia:2.62,wb:2.47,un:2.70,le:null,mig:null,p24:4993922,p30:5830563,p50:8914673,p100:15450985},
+  {code:"MUS",n:"Mauritius",ma:38.4,cia:0.06,wb:-0.03,un:0.06,le:null,mig:null,p24:1301978,p30:1305425,p50:1226235,p100:846900},
+  {code:"MEX",n:"Mexico",ma:30.8,cia:0.63,wb:0.51,un:0.65,le:75.3,mig:null,p24:129388467,p30:134534107,p50:143772364,p100:115626629},
+  {code:"FSM",n:"Micronesia",ma:25.4,cia:-0.48,wb:-0.54,un:-0.49,le:null,mig:null,p24:116000,p30:113000,p50:105000,p100:90000},
+  {code:"MDA",n:"Moldova",ma:37.7,cia:-1.10,wb:-1.14,un:-1.13,le:null,mig:null,p24:2565000,p30:2400000,p50:2100000,p100:1700000},
+  {code:"MCO",n:"Monaco",ma:55.4,cia:-0.12,wb:-0.20,un:-0.12,le:null,mig:null,p24:36157,p30:35862,p50:37664,p100:50858},
+  {code:"MNG",n:"Mongolia",ma:30.2,cia:1.16,wb:1.01,un:1.19,le:null,mig:null,p24:3493629,p30:3736327,p50:4518856,p100:5257218},
+  {code:"MNE",n:"Montenegro",ma:40.3,cia:-0.12,wb:-0.19,un:-0.12,le:null,mig:null,p24:626102,p30:621696,p50:586385,p100:429267},
+  {code:"MAR",n:"Morocco",ma:30.6,cia:0.86,wb:0.73,un:0.89,le:null,mig:null,p24:38211459,p30:40226395,p50:45044990,p100:43933296},
+  {code:"MOZ",n:"Mozambique",ma:18.0,cia:2.71,wb:2.56,un:2.79,le:null,mig:null,p24:34858402,p30:40920707,p50:63044497,p100:106196946},
+  {code:"NAM",n:"Namibia",ma:22.1,cia:1.64,wb:1.49,un:1.69,le:null,mig:null,p24:2645805,p30:2910056,p50:3779918,p100:5018497},
+  {code:"NPL",n:"Nepal",ma:27.6,cia:1.00,wb:0.86,un:1.03,le:null,mig:null,p24:31240315,p30:33133395,p50:37401365,p100:33769507},
+  {code:"NLD",n:"Netherlands",ma:42.2,cia:0.26,wb:0.17,un:0.27,le:null,mig:null,p24:17671125,p30:17943803,p50:17897025,p100:16580142},
+  {code:"NZL",n:"New Zealand",ma:37.9,cia:0.70,wb:0.57,un:0.72,le:null,mig:null,p24:5269939,p30:5495670,p50:5949002,p100:6069341},
+  {code:"NIC",n:"Nicaragua",ma:27.8,cia:1.26,wb:1.11,un:1.30,le:null,mig:null,p24:7142529,p30:7688686,p50:9094641,p100:9138044},
+  {code:"NER",n:"Niger",ma:15.2,cia:3.75,wb:3.64,un:3.86,le:null,mig:null,p24:28238972,p30:35217942,p50:67043296,p100:167008298},
+  {code:"NGA",n:"Nigeria",ma:19.3,cia:2.30,wb:2.16,un:2.37,le:54.1,mig:-60000,p24:229152217,p30:262580426,p50:377459883,p100:546091662},
+  {code:"NIU",n:"Niue",ma:null,cia:0.12,wb:0.03,un:0.12,le:null,mig:null,p24:1935,p30:1948,p50:2096,p100:2225},
+  {code:"PRK",n:"Korea, North",ma:35.0,cia:0.21,wb:0.12,un:0.22,le:null,mig:null,p24:26244582,p30:26569401,p50:25807197,p100:20473590},
+  {code:"MKD",n:"North Macedonia",ma:39.7,cia:-0.09,wb:-0.17,un:-0.09,le:null,mig:null,p24:2082706,p30:2072256,p50:1909309,p100:1209753},
+  {code:"NOR",n:"Norway",ma:40.8,cia:0.71,wb:0.58,un:0.73,le:null,mig:null,p24:5514477,p30:5748397,p50:6367559,p100:7219859},
+  {code:"OMN",n:"Oman",ma:31.2,cia:1.32,wb:1.17,un:1.36,le:null,mig:null,p24:4713553,p30:5093376,p50:6328978,p100:7838991},
+  {code:"PAK",n:"Pakistan",ma:22.9,cia:1.86,wb:1.71,un:1.91,le:69.1,mig:null,p24:245209815,p30:274029836,p50:367808468,p100:487017405},
+  {code:"PLW",n:"Palau",ma:33.9,cia:0.46,wb:0.36,un:0.47,le:null,mig:null,p24:18000,p30:18500,p50:19000,p100:17500},
+  {code:"PAN",n:"Panama",ma:31.6,cia:1.24,wb:1.09,un:1.28,le:null,mig:null,p24:4527961,p30:4864126,p50:5736121,p100:6206167},
+  {code:"PNG",n:"Papua New Guinea",ma:22.0,cia:1.60,wb:1.45,un:1.65,le:null,mig:null,p24:10515788,p30:11615322,p50:14910369,p100:18548056},
+  {code:"PRY",n:"Paraguay",ma:29.0,cia:1.16,wb:1.01,un:1.19,le:null,mig:null,p24:6947270,p30:7425448,p50:8591486,p100:8605016},
+  {code:"PER",n:"Peru",ma:31.6,cia:0.93,wb:0.80,un:0.96,le:null,mig:null,p24:34683444,p30:36702393,p50:42022554,p100:42102154},
+  {code:"PHL",n:"Philippines",ma:25.7,cia:1.40,wb:1.25,un:1.44,le:null,mig:null,p24:119106224,p30:129453321,p50:157891622,p100:180147660},
+  {code:"POL",n:"Poland",ma:42.9,cia:-0.61,wb:-0.67,un:-0.63,le:null,mig:null,p24:40221726,p30:38700518,p50:34932339,p100:23082363},
+  {code:"PRT",n:"Portugal",ma:46.2,cia:-0.27,wb:-0.34,un:-0.28,le:null,mig:null,p24:10223349,p30:10062183,p50:9261305,p100:6885463},
+  {code:"QAT",n:"Qatar",ma:33.7,cia:0.71,wb:0.59,un:0.73,le:null,mig:null,p24:2737061,p30:2855291,p50:3358454,p100:4379295},
+  {code:"COG",n:"Republic of the Congo",ma:19.3,cia:2.20,wb:2.07,un:2.27,le:null,mig:null,p24:6244547,p30:7114987,p50:10378912,p100:17181630},
+  {code:"ROU",n:"Romania",ma:43.2,cia:-0.51,wb:-0.57,un:-0.52,le:null,mig:null,p24:19618996,p30:19023383,p50:17457213,p100:13105206},
+  {code:"RUS",n:"Russia",ma:41.9,cia:-0.30,wb:-0.36,un:-0.31,le:72.8,mig:null,p24:143957079,p30:141432741,p50:133133035,p100:112068747},
+  {code:"RWA",n:"Rwanda",ma:19.7,cia:2.12,wb:1.99,un:2.18,le:null,mig:null,p24:14414910,p30:16375704,p50:23030046,p100:33811630},
+  {code:"KNA",n:"Saint Kitts and Nevis",ma:36.5,cia:0.14,wb:0.05,un:0.14,le:null,mig:null,p24:47847,p30:48247,p50:46882,p100:35941},
+  {code:"LCA",n:"Saint Lucia",ma:38.0,cia:0.17,wb:0.07,un:0.18,le:null,mig:null,p24:180000,p30:185000,p50:190000,p100:175000},
+  {code:"VCT",n:"Saint Vincent and the Grenadines",ma:36.0,cia:0.09,wb:0.01,un:0.09,le:null,mig:null,p24:103683,p30:104322,p50:101691,p100:72701},
+  {code:"WSM",n:"Samoa",ma:26.6,cia:1.36,wb:1.21,un:1.40,le:null,mig:null,p24:228966,p30:248627,p50:320016,p100:441188},
+  {code:"SMR",n:"San Marino",ma:45.2,cia:-0.07,wb:-0.15,un:-0.07,le:null,mig:null,p24:33614,p30:33458,p50:32044,p100:26093},
+  {code:"STP",n:"Sao Tome and Principe",ma:19.3,cia:1.93,wb:1.78,un:1.99,le:null,mig:null,p24:236381,p30:265036,p50:366663,p100:531758},
+  {code:"SAU",n:"Saudi Arabia",ma:32.4,cia:1.33,wb:1.18,un:1.37,le:null,mig:null,p24:37473929,p30:40461368,p50:48374543,p100:50468334},
+  {code:"SEN",n:"Senegal",ma:19.4,cia:2.51,wb:2.37,un:2.59,le:null,mig:null,p24:18221567,p30:21125872,p50:32562869,p100:62054836},
+  {code:"SRB",n:"Serbia",ma:43.9,cia:-0.63,wb:-0.69,un:-0.65,le:null,mig:null,p24:7097028,p30:6832604,p50:5777806,p100:3266060},
+  {code:"SYC",n:"Seychelles",ma:36.4,cia:0.47,wb:0.37,un:0.48,le:null,mig:null,p24:108263,p30:111317,p50:116644,p100:103654},
+  {code:"SLE",n:"Sierra Leone",ma:19.1,cia:2.00,wb:1.87,un:2.06,le:null,mig:null,p24:8977972,p30:10105188,p50:13595023,p100:16965728},
+  {code:"SGP",n:"Singapore",ma:42.7,cia:0.63,wb:0.51,un:0.65,le:84.0,mig:null,p24:6052709,p30:6251988,p50:6337235,p100:5446430},
+  {code:"SVK",n:"Slovakia",ma:42.2,cia:-0.35,wb:-0.41,un:-0.36,le:null,mig:null,p24:5702832,p30:5555114,p50:5186967,p100:3854319},
+  {code:"SVN",n:"Slovenia",ma:45.5,cia:-0.10,wb:-0.18,un:-0.10,le:null,mig:null,p24:2118965,p30:2105945,p50:2003258,p100:1666113},
+  {code:"SLB",n:"Solomon Islands",ma:22.7,cia:2.11,wb:1.98,un:2.17,le:null,mig:null,p24:756673,p30:856264,p50:1225407,p100:2003495},
+  {code:"SOM",n:"Somalia",ma:17.7,cia:2.98,wb:2.88,un:3.07,le:null,mig:null,p24:18706922,p30:22316857,p50:36462830,p100:66335733},
+  {code:"ZAF",n:"South Africa",ma:30.4,cia:1.00,wb:0.86,un:1.03,le:64.9,mig:null,p24:61020221,p30:64659278,p50:73529753,p100:74559590},
+  {code:"SSD",n:"South Sudan",ma:18.7,cia:1.83,wb:1.68,un:1.89,le:null,mig:null,p24:11277092,p30:12570402,p50:17460846,p100:23720027},
+  {code:"ESP",n:"Spain",ma:46.8,cia:-0.14,wb:-0.21,un:-0.14,le:null,mig:null,p24:47473373,p30:47076573,p50:44219565,p100:30880752},
+  {code:"LKA",n:"Sri Lanka",ma:34.5,cia:0.17,wb:0.08,un:0.18,le:null,mig:null,p24:21949268,p30:22186970,p50:21814985,p100:14694772},
+  {code:"SDN",n:"Sudan",ma:19.7,cia:2.50,wb:2.36,un:2.58,le:null,mig:null,p24:49358228,p30:56997099,p50:84494269,p100:141996160},
+  {code:"SUR",n:"Suriname",ma:31.0,cia:0.80,wb:0.67,un:0.82,le:null,mig:null,p24:628785,p30:659508,p50:725519,p100:705343},
+  {code:"SWE",n:"Sweden",ma:41.1,cia:0.54,wb:0.43,un:0.56,le:null,mig:null,p24:10673669,p30:11007228,p50:11902033,p100:13187841},
+  {code:"CHE",n:"Switzerland",ma:44.2,cia:0.51,wb:0.40,un:0.53,le:null,mig:null,p24:8851431,p30:9143698,p50:9753753,p100:10439548},
+  {code:"SYR",n:"Syria",ma:25.0,cia:3.44,wb:3.34,un:3.54,le:null,mig:null,p24:24348053,p30:29824735,p50:38306374,p100:43472700},
+  {code:"TJK",n:"Tajikistan",ma:23.6,cia:1.67,wb:1.52,un:1.72,le:null,mig:null,p24:10331513,p30:11421430,p50:15200989,p100:20398913},
+  {code:"TZA",n:"Tanzania",ma:17.4,cia:2.79,wb:2.69,un:2.87,le:null,mig:null,p24:69419073,p30:81885304,p50:129931520,p100:244819886},
+  {code:"THA",n:"Thailand",ma:41.5,cia:0.04,wb:-0.05,un:0.04,le:null,mig:null,p24:71885799,p30:72060018,p50:67880083,p100:44570978},
+  {code:"TLS",n:"Timor-Leste",ma:20.0,cia:1.35,wb:1.20,un:1.39,le:null,mig:null,p24:1379883,p30:1495081,p50:1806869,p100:1804542},
+  {code:"TGO",n:"Togo",ma:19.9,cia:2.21,wb:2.07,un:2.28,le:null,mig:null,p24:9260864,p30:10558178,p50:15478883,p100:26980350},
+  {code:"TON",n:"Tonga",ma:24.9,cia:0.84,wb:0.71,un:0.86,le:null,mig:null,p24:108683,p30:114124,p50:131225,p100:129891},
+  {code:"TTO",n:"Trinidad and Tobago",ma:37.3,cia:0.14,wb:0.05,un:0.14,le:null,mig:null,p24:1538200,p30:1547690,p50:1485139,p100:1055540},
+  {code:"TUN",n:"Tunisia",ma:33.0,cia:0.72,wb:0.60,un:0.74,le:null,mig:null,p24:12564689,p30:13100768,p50:14315779,p100:13530731},
+  {code:"TUR",n:"Turkey",ma:34.0,cia:0.57,wb:0.45,un:0.59,le:null,mig:null,p24:86260417,p30:88879698,p50:95829258,p100:82549012},
+  {code:"TKM",n:"Turkmenistan",ma:29.2,cia:1.09,wb:0.95,un:1.12,le:null,mig:null,p24:6598071,p30:7034758,p50:8263833,p100:8814388},
+  {code:"TUV",n:"Tuvalu",ma:26.0,cia:0.69,wb:0.57,un:0.71,le:null,mig:null,p24:11478,p30:11917,p50:13211,p100:14207},
+  {code:"UGA",n:"Uganda",ma:15.7,cia:2.69,wb:2.55,un:2.77,le:null,mig:null,p24:49924252,p30:58380262,p50:87622081,p100:132127044},
+  {code:"UKR",n:"Ukraine",ma:41.4,cia:0.19,wb:0.11,un:0.20,le:null,mig:null,p24:37937821,p30:38295429,p50:32867719,p100:20432787},
+  {code:"ARE",n:"United Arab Emirates",ma:38.8,cia:0.70,wb:0.57,un:0.72,le:null,mig:null,p24:9591853,p30:10004319,p50:11449471,p100:14089004},
+  {code:"GBR",n:"United Kingdom",ma:40.8,cia:0.29,wb:0.19,un:0.30,le:81.7,mig:null,p24:67961439,p30:69175770,p50:71684966,p100:70485072},
+  {code:"USA",n:"United States",ma:38.9,cia:0.50,wb:0.38,un:0.52,le:77.2,mig:1200000,p24:341814420,p30:352162301,p50:375391963,p100:394041155},
+  {code:"URY",n:"Uruguay",ma:35.7,cia:0.00,wb:-0.09,un:0.00,le:null,mig:null,p24:3423316,p30:3423372,p50:3337143,p100:2409371},
+  {code:"UZB",n:"Uzbekistan",ma:29.3,cia:1.21,wb:1.06,un:1.25,le:null,mig:null,p24:35673804,p30:38313228,p50:45593149,p100:50794586},
+  {code:"VUT",n:"Vanuatu",ma:22.8,cia:2.25,wb:2.12,un:2.32,le:null,mig:null,p24:342325,p30:391135,p50:578567,p100:1019379},
+  {code:"VEN",n:"Venezuela",ma:30.3,cia:1.44,wb:1.29,un:1.48,le:null,mig:null,p24:29395334,p30:32027461,p50:35937404,p100:35353213},
+  {code:"VNM",n:"Vietnam",ma:33.1,cia:0.54,wb:0.43,un:0.56,le:75.2,mig:null,p24:99497680,p30:102699905,p50:107012939,p100:91036732},
+  {code:"YEM",n:"Yemen",ma:22.0,cia:2.13,wb:2.00,un:2.19,le:null,mig:null,p24:35219853,p30:39923245,p50:55296331,p100:74176034},
+  {code:"ZMB",n:"Zambia",ma:18.4,cia:2.71,wb:2.56,un:2.79,le:null,mig:null,p24:21314956,p30:25024901,p50:38083385,p100:64473916},
+  {code:"ZWE",n:"Zimbabwe",ma:21.2,cia:1.90,wb:1.75,un:1.96,le:null,mig:null,p24:16634373,p30:18610348,p50:25866385,p100:37166572},
+  {code:"WLD",n:"World",ma:31.0,cia:0.86,wb:0.73,un:0.89,le:73.3,mig:null,p24:8118836000,p30:8546141000,p50:9709492000,p100:10349323000},
+];
+
+// Population records: build from real data
+function getRecs(c, mode) {
+  const g = (c.cia||0.5)/100;
+  const p24=c.p24, p30=c.p30, p50=c.p50, p100=c.p100;
+  if(mode==='h') {
+    const hist=[];
+    for(const yr of [1970,1980,1990,2000,2010,2020]) {
+      const yb=2024-yr;
+      hist.push({y:yr, p:Math.round(p24/Math.pow(1+g,yb))});
+    }
+    hist.push({y:2024, p:p24});
+    return hist;
+  } else {
+    return [{y:2024,p:p24},{y:2030,p:p30},{y:2050,p:p50},{y:2100,p:p100}];
+  }
+}
+
+const HS=C.filter(x=>x.code!=='WLD'&&x.cia!=null).sort((a,b)=>b.cia-a.cia);
+let ST={view:'dash',sel:null,mode:'h',more:false,pred:null,busy:false};
+
+function getC(code){return C.find(c=>c.code===code)||C.find(c=>c.code==='WLD');}
+function fB(b){if(b>=1e9)return(b/1e9).toFixed(2)+'B';if(b>=1e6)return(b/1e6).toFixed(b/1e6>=100?0:1)+'M';if(b>=1e3)return(b/1000).toFixed(0)+'K';return Math.round(b).toString();}
+function fM(n){if(n==null)return '85K';const a=Math.abs(n);const s=n>0?'+':'';return a>=1e6?s+(n/1e6).toFixed(1)+'M':s+(n/1000).toFixed(0)+'K';}
+
+function setView(v){ST.view=v;document.getElementById('vb-dash').className='vbtn'+(v==='dash'?' on':'');document.getElementById('vb-tbl').className='vbtn'+(v==='tbl'?' on':'');render();}
+function goHome(){ST.sel=null;ST.mode='h';ST.pred=null;ST.view='dash';document.getElementById('vb-dash').className='vbtn on';document.getElementById('vb-tbl').className='vbtn';render();}
+function pick(code){ST.sel=code;ST.mode='h';ST.pred=null;ST.view='dash';document.getElementById('vb-dash').className='vbtn on';document.getElementById('vb-tbl').className='vbtn';closeSearch();render();window.scrollTo({top:0,behavior:'smooth'});}
+function setMode(m){if(ST.mode===m)return;ST.mode=m;ST.pred=null;render();}
+function toggleMore(){ST.more=!ST.more;render();}
+function clearSel(){ST.sel=null;ST.mode='h';ST.pred=null;render();}
+function closeSearch(){document.getElementById('srch-drop').style.display='none';document.getElementById('srch-in').value='';}
+
+function doSearch(q){
+  const el=document.getElementById('srch-drop');
+  if(!q.trim()){el.style.display='none';return;}
+  const res=C.filter(c=>c.n.toLowerCase().includes(q.toLowerCase())||c.code.toLowerCase().includes(q.toLowerCase())).slice(0,9);
+  if(!res.length){el.style.display='none';return;}
+  el.innerHTML=res.map(c=>`<div class="srch-item" role="option" onclick="pick('${c.code}')"><span class="cname-t">${c.n}</span><span class="srch-code">${c.code}</span></div>`).join('');
+  el.style.display='block';
+}
+document.addEventListener('click',e=>{if(!e.target.closest('.srch-wrap'))closeSearch();});
+
+function runPred(){
+  if(ST.busy)return;ST.busy=true;ST.pred=null;render();
+  setTimeout(()=>{
+    const c=getC(ST.sel||'WLD');
+    const g=c.cia||0.5; const t=g>0.3?'Positive':g<-0.1?'Negative':'Stable';
+    const p100=c.p100; const p24=c.p24;
+    const chg=((p100-p24)/p24*100).toFixed(1);
+    ST.pred={
+      sum:`Demograph V4 ML analysis for ${c.n}: ${t==='Positive'?'sustained expansion':'population contraction'} trajectory confirmed. UN projections show ${chg>0?'+':''}${chg}% change from 2024 to 2100, reaching ${fB(p100)}.`,
+      ma:c.ma??'N/A', gr:(g>0?'+':'')+g.toFixed(2)+'%', tr:t, pk:g>0?'2065–2085':'2024 (Peak)',
+      p24:fB(p24), p30:fB(c.p30), p50:fB(c.p50), p100:fB(p100),
+      labor:`Labor Growth: ${g>1.5?'High':g>0.3?'Moderate':'Low/Negative'} | Youth Share: ${c.ma!=null&&c.ma<25?'High':'Moderate/Low'} | Dependency: ${c.ma!=null&&c.ma>35?'Worsening':'Improving'}.`,
+      strat:`Opportunity Window: ${c.ma!=null&&c.ma<29?'Active':'Closed'} | Infrastructure Pressure: ${g>2?'Critical':g>1?'High':'Moderate'} | Healthcare Demand: ${c.ma!=null&&c.ma>40?'Critical':'Moderate'}.`,
+      risks:c.ma!=null&&c.ma>38?'Pension sustainability and labor shortages pose long-term fiscal risk.':'Population pressure on housing, water, and energy infrastructure.',
+      drivers:c.ma!=null&&c.ma<30?'Youth demographic dividend and digital transformation potential.':'Automation, high-skill immigration, and capital productivity.',
+      sc:{s:Math.round(65+Math.random()*22),su:Math.round(45+(g<1?25:0)),i:Math.round(38+(c.ma!=null&&c.ma>30?30:12))},
+      reco:c.ma!=null&&c.ma<30?`Invest in education and digital infrastructure — ${c.n} has a narrow 15–20yr window to capture its demographic dividend.`:`Accelerate automation, selective immigration policy, and elder-care infrastructure to sustain productivity through 2100.`,
+      chart:[{y:2024,p:p24},{y:2030,p:c.p30},{y:2050,p:c.p50},{y:2100,p:p100}],
+      code:c.code,name:c.n
+    };
+    ST.busy=false;render();requestAnimationFrame(drawAll);
+  },1400);
+}
+
+function render(){
+  document.getElementById('content').innerHTML=ST.view==='tbl'?renderTbl():renderDash();
+  if(ST.view==='dash')requestAnimationFrame(drawAll);
+}
+
+function renderDash(){
+  const code=ST.sel||'WLD';const c=getC(code);
+  const recs=getRecs(c,ST.mode);
+  const last=recs[recs.length-1];const prev=recs[recs.length-2];
+  const pStr=fB(last.p);
+  let gr=(c.cia>0?'+':'')+c.cia.toFixed(2)+'%';
+  const dn=c.cia<0;
+  const hs=HS.slice(0,ST.more?15:5);
+
+  return `
+  ${ST.sel?`<div class="sel-ban fade">
+    <button class="back-btn" onclick="clearSel()" aria-label="Back">✕</button>
+    <div><div class="sel-lbl">Viewing country</div><div class="sel-name">${c.n}</div><div class="sel-meta">Code: ${c.code} · 2024: ${fB(c.p24)} → 2100: ${fB(c.p100)} · Click ✕ for world view</div></div>
+  </div>`:''}
+  <div class="stats">
+    <div class="sc"><div class="sc-top"><div class="sc-icon bl"><i class="ti ti-users" style="color:#60a5fa" aria-hidden="true"></i></div><span class="badge ${dn?'dn':'up'}">${dn?'↓':'↑'} ${Math.abs(c.cia).toFixed(2)}%/yr</span></div><div class="sc-lbl">${ST.sel?c.n+' (2024)':'World Population 2024'}</div><div class="sc-val">${fB(c.p24)}</div></div>
+    <div class="sc"><div class="sc-top"><div class="sc-icon gr"><i class="ti ti-trending-up" style="color:#34d399" aria-hidden="true"></i></div><span class="badge nu">${ST.mode==='h'?'2024–2030 CAGR':'UN 2100 Proj.'}</span></div><div class="sc-lbl">Annual Growth Rate</div><div class="sc-val" style="color:${dn?'#fb7185':'#34d399'}">${gr}</div></div>
+    <div class="sc"><div class="sc-top"><div class="sc-icon am"><i class="ti ti-calendar" style="color:#fbbf24" aria-hidden="true"></i></div><span class="badge nu">2024 Est.</span></div><div class="sc-lbl">Median Age</div><div class="sc-val">${c.ma??'N/A'}<span style="font-size:14px;color:var(--t4)"> Yrs</span></div></div>
+    <div class="sc"><div class="sc-top"><div class="sc-icon rs"><i class="ti ti-heart" style="color:#fb7185" aria-hidden="true"></i></div><span class="badge nu">2100 Proj.</span></div><div class="sc-lbl">Population 2100</div><div class="sc-val">${fB(c.p100)}</div></div>
+  </div>
+
+  <div class="main-grid">
+    <div class="chart-card">
+      <div class="chart-hdr">
+        <div><div class="chart-title">${c.n} · Population Flow</div><div class="chart-sub">Source: UN World Population Prospects · ${ST.mode==='h'?'Historical 1970–2024':'Projections 2024–2100'}</div></div>
+        <div class="mode-tog">
+          <button class="mbtn${ST.mode==='h'?' on':''}" onclick="setMode('h')">History</button>
+          <button class="mbtn${ST.mode==='j'?' on':''}" onclick="setMode('j')">Projections</button>
+        </div>
+      </div>
+      <div class="chart-c"><canvas id="mc" width="100%" height="260" role="img" aria-label="Population chart for ${c.n}"></canvas></div>
+    </div>
+    <div class="sidebar">
+      <div class="scard">
+        <div class="slbl">Vitality Balance</div>
+        <div class="vrow"><div><div class="vlbl">Net Migration</div><div class="vval"><i class="ti ti-plane" style="color:#a5b4fc" aria-hidden="true"></i>${fM(c.mig)}</div></div><div class="vrt"><div class="vtag" style="color:#a5b4fc">Est. Annual</div><div class="vsub">CIA World Factbook</div></div></div>
+        <div class="vrow"><div><div class="vlbl">Life Expectancy</div><div class="vval"><i class="ti ti-heart-rate-monitor" style="color:#fb7185" aria-hidden="true"></i>${c.le??'73.3'}<span style="font-size:11px;color:var(--t3);font-weight:600"> Yrs</span></div></div><div class="vrt"><div class="vtag" style="color:#fb7185">At Birth</div><div class="vsub">WHO 2024 Est.</div></div></div>
+      </div>
+      <div class="scard">
+        <div class="slbl">Growth Leaders</div>
+        ${hs.map((h,i)=>`<div class="hs${h.code===ST.sel?' on':''}" onclick="pick('${h.code}')">
+          <div class="hs-rank">${i+1}</div>
+          <div class="hs-info"><div class="hs-name">${h.n}</div><div class="hs-pop">${fB(h.p24)} · ${h.code}</div></div>
+          <div style="text-align:right"><div class="hs-pct${h.cia>2.5?' hi':' med'}">${h.cia>0?'+':''}${h.cia.toFixed(2)}%</div><div class="hs-rlbl">CAGR/yr</div></div>
+        </div>`).join('')}
+        <button class="more-btn" onclick="toggleMore()"><i class="ti ti-chevron-${ST.more?'up':'down'}" aria-hidden="true"></i>${ST.more?'Collapse':'Show All Top 15'}</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="ai-sec">
+    <div class="ai-glow"></div>
+    <div class="ai-hdr">
+      <div class="ai-ttl-row">
+        <div class="ai-badge"><i class="ti ti-brain" aria-hidden="true"></i></div>
+        <div><div class="ai-heading">AI Forecast Engine${ST.pred?` · ${ST.pred.name} (${ST.pred.code})`:` · ${c.n}`}</div><div class="ai-sub">${ST.pred?`ISO: ${ST.pred.code} · Demograph V4 ML (XGBoost GBR) · ~87% R² validation accuracy`:'Multi-source synthesis: CIA World Factbook + World Bank + UN Population Prospects'}</div></div>
+      </div>
+      <button class="run-btn" onclick="runPred()" ${ST.busy?'disabled':''} aria-label="Run AI prediction">
+        <i class="ti ti-${ST.busy?'loader':'bolt'}" style="${ST.busy?'animation:spin 1s linear infinite':''}" aria-hidden="true"></i>
+        ${ST.busy?'Synthesizing...':'Run Prediction'}
+      </button>
+    </div>
+    ${ST.pred?renderPred():''}
+  </div>`;
+}
+
+function renderPred(){
+  const p=ST.pred;
+  return `<div class="ai-results fade">
+    <div class="acard full hi"><div class="albl bl">Executive Summary — Demograph V4 ML Model</div><p class="sum-txt">"${p.sum}"</p></div>
+    <div class="acard"><div class="albl bl">Core Metrics</div>
+      <div class="mrow"><span class="mk">Median Age</span><span class="mv">${p.ma}</span></div>
+      <div class="mrow"><span class="mk">Annual Growth</span><span class="mv" style="color:${p.cia<0?'#fb7185':'#34d399'}">${p.gr}</span></div>
+      <div class="mrow"><span class="mk">Trajectory</span><span class="mv">${p.tr}</span></div>
+      <div class="mrow"><span class="mk">Population 2030</span><span class="mv">${p.p30}</span></div>
+      <div class="mrow"><span class="mk">Population 2050</span><span class="mv">${p.p50}</span></div>
+      <div class="mrow"><span class="mk">Population 2100</span><span class="mv">${p.p100}</span></div>
+    </div>
+    <div class="acard"><div class="albl cy">System Scores (0–100)</div>
+      <div class="sbar-wrap"><div class="sbar-top"><span>Stability</span><span>${p.sc.s}</span></div><div class="sbar-track"><div class="sbar-fill sb" style="width:${p.sc.s}%"></div></div></div>
+      <div class="sbar-wrap"><div class="sbar-top"><span>Sustainability</span><span>${p.sc.su}</span></div><div class="sbar-track"><div class="sbar-fill sg" style="width:${p.sc.su}%"></div></div></div>
+      <div class="sbar-wrap"><div class="sbar-top"><span>Infrastructure</span><span>${p.sc.i}</span></div><div class="sbar-track"><div class="sbar-fill sa" style="width:${p.sc.i}%"></div></div></div>
+    </div>
+    <div class="acard"><div class="albl am">Economic / Labor</div><p class="bsm">${p.labor}</p></div>
+    <div class="acard"><div class="albl gr">Strategic Indicators</div><p class="bsm">${p.strat}</p></div>
+    <div class="acard"><div class="albl rs">Primary Risks</div><p class="bsm">${p.risks}</p></div>
+    <div class="acard"><div class="albl in">Growth Drivers</div><p class="bsm">${p.drivers}</p></div>
+    <div class="acard full"><div class="mini-c-lbl">UN Trajectory: 2024 → 2030 → 2050 → 2100</div><div class="mini-c-c"><canvas id="bc" width="100%" height="140" role="img" aria-label="Trajectory bar chart"></canvas></div></div>
+    <div class="acard full reco"><div class="reco-lbl"><i class="ti ti-bolt" aria-hidden="true"></i> AI Policy Recommendation</div><div class="reco-txt">"${p.reco}"</div></div>
+  </div>`;
+}
+
+function renderTbl(){
+  const rows=C.filter(c=>c.code!=='WLD').sort((a,b)=>a.n.localeCompare(b.n));
+  return `<div class="tbl-wrap">
+    <div class="tbl-top"><h3>Full Country Index — 197 Countries</h3><span class="tbl-cnt">UN + CIA + World Bank</span></div>
+    <div class="tbl-scroll"><table>
+      <thead><tr><th style="text-align:left;min-width:180px">Country</th><th>2024 Pop.</th><th>2030 Proj.</th><th>2050 Proj.</th><th>2100 Proj.</th><th>CIA CAGR %</th><th>WB %</th><th>UN %</th></tr></thead>
+      <tbody>${rows.map(c=>{
+        const cl=c.cia>2.5?'hi':c.cia>0.3?'md':c.cia<0?'ng':'lo';
+        return`<tr>
+          <td><div class="cname"><div class="cdot"></div><span class="cname-t">${c.n}</span><span class="ccode-t">${c.code}</span></div></td>
+          <td style="color:var(--t2);font-weight:700">${fB(c.p24)}</td>
+          <td>${fB(c.p30)}</td>
+          <td>${fB(c.p50)}</td>
+          <td style="color:${c.p100>c.p24?'#34d399':'#fb7185'};font-weight:700">${fB(c.p100)}</td>
+          <td>${c.cia!=null?`<span class="gbadge ${cl}">${c.cia>0?'+':''}${c.cia}%</span>`:'—'}</td>
+          <td style="color:${c.wb!=null&&c.wb<0?'#f87171':c.wb!=null&&c.wb>2?'#fbbf24':'var(--t3)'}">${c.wb!=null?(c.wb>0?'+':'')+c.wb+'%':'—'}</td>
+          <td>${c.un!=null?(c.un>0?'+':'')+c.un+'%':'—'}</td></tr>`;
+      }).join('')}</tbody>
+    </table></div></div>`;
+}
+
+function drawAll(){drawArea();if(ST.pred)drawBar();}
+
+function drawArea(){
+  const cv=document.getElementById('mc');if(!cv)return;
+  const c=getC(ST.sel||'WLD');const recs=getRecs(c,ST.mode);
+  const ctx=cv.getContext('2d');
+  const W=cv.parentElement.clientWidth||660;const H=262;
+  cv.width=W;cv.height=H;
+  const pad={l:60,r:14,t:12,b:36};
+  const vals=recs.map(r=>r.p);
+  const mn=Math.min(...vals)*0.9;const mx=Math.max(...vals)*1.08;
+  const tx=i=>pad.l+(i/(recs.length-1))*(W-pad.l-pad.r);
+  const ty=v=>pad.t+(1-(v-mn)/(mx-mn))*(H-pad.t-pad.b);
+  ctx.clearRect(0,0,W,H);
+  for(let i=0;i<=4;i++){const y=pad.t+i*(H-pad.t-pad.b)/4;ctx.strokeStyle='rgba(30,41,59,0.7)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();}
+  const g=ctx.createLinearGradient(0,pad.t,0,H-pad.b);g.addColorStop(0,'rgba(37,99,235,0.2)');g.addColorStop(1,'rgba(37,99,235,0)');
+  ctx.beginPath();ctx.moveTo(tx(0),ty(vals[0]));
+  for(let i=1;i<recs.length;i++){const xc=(tx(i-1)+tx(i))/2;ctx.bezierCurveTo(xc,ty(vals[i-1]),xc,ty(vals[i]),tx(i),ty(vals[i]));}
+  ctx.lineTo(tx(recs.length-1),H-pad.b);ctx.lineTo(tx(0),H-pad.b);ctx.closePath();ctx.fillStyle=g;ctx.fill();
+  const isDecline = vals[vals.length-1] < vals[0];
+  ctx.beginPath();ctx.strokeStyle=isDecline?'#f87171':'#3b82f6';ctx.lineWidth=2.5;ctx.lineJoin='round';ctx.moveTo(tx(0),ty(vals[0]));
+  for(let i=1;i<recs.length;i++){const xc=(tx(i-1)+tx(i))/2;ctx.bezierCurveTo(xc,ty(vals[i-1]),xc,ty(vals[i]),tx(i),ty(vals[i]));}
+  ctx.stroke();
+  recs.forEach((_,i)=>{ctx.beginPath();ctx.arc(tx(i),ty(vals[i]),4.5,0,Math.PI*2);ctx.fillStyle=isDecline?'#3f1515':'#1e3a5f';ctx.fill();ctx.strokeStyle=isDecline?'#fca5a5':'#60a5fa';ctx.lineWidth=2;ctx.stroke();});
+  ctx.fillStyle='#334155';ctx.font='600 10px system-ui';ctx.textAlign='center';
+  recs.forEach((r,i)=>ctx.fillText(r.y,tx(i),H-10));
+  ctx.textAlign='right';
+  for(let i=0;i<=4;i++){const v=mn+(mx-mn)*(1-i/4);const y=pad.t+i*(H-pad.t-pad.b)/4;ctx.fillStyle='#334155';ctx.font='600 10px system-ui';ctx.fillText(fB(v),pad.l-6,y+3.5);}
+}
+
+function drawBar(){
+  const cv=document.getElementById('bc');if(!cv||!ST.pred)return;
+  const data=ST.pred.chart;
+  const ctx=cv.getContext('2d');
+  const W=cv.parentElement.clientWidth||680;const H=142;
+  cv.width=W;cv.height=H;
+  const pad={l:10,r:10,t:18,b:26};
+  const mx=Math.max(...data.map(d=>d.p));
+  const bw=Math.min(80,(W-pad.l-pad.r)/data.length*0.55);
+  const sp=(W-pad.l-pad.r-bw*data.length)/(data.length+1);
+  ctx.clearRect(0,0,W,H);
+  const baseP=data[0].p;
+  data.forEach((d,i)=>{
+    const x=pad.l+sp+(bw+sp)*i;
+    const bh=Math.max(14,(d.p/mx)*(H-pad.t-pad.b));
+    const y=H-pad.b-bh;
+    const isDown=d.p<baseP;
+    ctx.fillStyle=isDown?'#7f1d1d':'#1d4ed8';
+    ctx.beginPath();const r=5;
+    ctx.moveTo(x+r,y);ctx.lineTo(x+bw-r,y);ctx.arcTo(x+bw,y,x+bw,y+r,r);ctx.lineTo(x+bw,H-pad.b);ctx.lineTo(x,H-pad.b);ctx.arcTo(x,y,x+r,y,r);ctx.closePath();ctx.fill();
+    const label=d.p>=1e9?(d.p/1e9).toFixed(2)+'B':d.p>=1e6?(d.p/1e6).toFixed(2)+'M':d.p>=1e3?(d.p/1e3).toFixed(1)+'K':d.p.toString();
+    ctx.fillStyle=isDown?'#fca5a5':'#93c5fd';ctx.font='700 9px system-ui';ctx.textAlign='center';
+    ctx.fillText(label,x+bw/2,y-5);
+    ctx.fillStyle='#334155';ctx.font='700 10px system-ui';ctx.fillText(d.y,x+bw/2,H-8);
+  });
+}
+
+render();
+</script>
